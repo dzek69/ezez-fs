@@ -1,0 +1,79 @@
+{
+  "name": "@ezez/fs",
+  "version": "0.0.1",
+  "repository": "git@github.com:dzek69/ezez-fs.git",
+  "author": "Jacek Nowacki",
+  "license": "MIT",
+  "scripts": {
+    "test": "NODE_ENV=test jest",
+    "docs": "typedoc src/index.ts --skipErrorChecking --out docs --includeVersion",
+    "compile": "pnpm run compile:esm && pnpm run compile:cjs",
+    "compile:esm": "rm -rf esm && tsc --project tsconfig.esm.json && node ./build-scripts/compile.esm.after.mjs",
+    "compile:cjs": "rm -rf dist && tsc --project tsconfig.cjs.json && node ./build-scripts/compile.cjs.after.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx,.js,.jsx,.mjs",
+    "lint:fix": "pnpm run lint --fix",
+    "prepack": "pnpm run compile",
+    "prepublishOnly": "pnpm audit && pnpm run lint && pnpm run test && pnpm run docs",
+    "prepare": "husky install",
+    "start:dev": "nodemon",
+    "start:dev:compatibility": "TS_NODE_FILES=true pnpm run start:dev",
+    "updates": "pnpm dlx npm-check-updates --dep prod",
+    "updates:dev": "pnpm dlx npm-check-updates --dep dev",
+    "updates:all": "pnpm dlx npm-check-updates"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "types": "./esm/index.d.ts",
+      "default": "./esm/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./esm/index.d.ts",
+  "module": "./esm/index.js",
+  "type": "module",
+  "dependencies": {
+    "@ezez/errors": "^6.0.1",
+    "oop-timers": "^5.0.0",
+    "tree-kill": "^1.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.20",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-typescript": "^7.22.15",
+    "@dzek69/eslint-config-base": "^2.5.0",
+    "@dzek69/eslint-config-import": "^1.3.0",
+    "@dzek69/eslint-config-import-typescript": "^1.0.1",
+    "@dzek69/eslint-config-typescript": "^1.1.1",
+    "@knodes/typedoc-plugin-pages": "^0.23.4",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "babel-plugin-module-extension": "^0.1.3",
+    "eslint": "^8.44.0",
+    "eslint-plugin-import": "^2.28.1",
+    "fs-extra": "^11.1.1",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "must": "^0.13.4",
+    "nodemon": "^3.0.1",
+    "prettier": "^2.8.8",
+    "resolve-tspaths": "^0.8.15",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.23.28",
+    "typescript": "^5.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "pnpm run prepublishOnly && pnpm run compile"
+    }
+  },
+  "libraryTemplate": {
+    "version": "3.11.2",
+    "language": "typescript",
+    "fixDefaultForCommonJS": true,
+    "jsx": false
+  }
+}
