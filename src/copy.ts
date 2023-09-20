@@ -39,7 +39,7 @@ type ResultStats = {
     time: number;
 };
 
-const MIN_TIMEOUT = 30;
+const MIN_TIMEOUT = 3000;
 
 /**
  * Copies a file from source to destination with progress reporting. It requires `pv` to be installed.
